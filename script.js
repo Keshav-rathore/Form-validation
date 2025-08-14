@@ -2,6 +2,7 @@ const username = document.getElementById('name');
 const email = document.getElementById('email');
 const dob = document.getElementById('dob');
 const password = document.getElementById('password');
+const passwordStrength = document.getElementById('password-strength');
 const confirmPassword = document.getElementById('confirm-password');
 const submitButton = document.getElementById('submitbtn');
 
@@ -115,4 +116,32 @@ document.getElementById('myForm').addEventListener('submit', function(e) {
     password.value = '';
     confirmPassword.value = '';
     alert('Form submitted successfully!');
+});
+
+
+function checkPasswordStrength(pwd) {
+    let strength = 0;
+
+    if (pwd.length >= 6) strength++;               
+    if (/[A-Z]/.test(pwd)) strength++;            
+    if (/[a-z]/.test(pwd)) strength++;            
+    if (/\d/.test(pwd)) strength++;               
+    if (/[@#$%^&()+_!]/.test(pwd)) strength++;    
+
+    if (strength <= 2) return 'Weak';
+    if (strength === 3 || strength === 4) return 'Medium';
+    if (strength === 5) return 'Strong';
+}
+
+password.addEventListener('input', () => {
+    const pwd = password.value;
+    if (pwd === '') {
+        passwordStrength.textContent = '';
+        passwordStrength.className = 'password-strength';
+        return;
+    }
+    const strength = checkPasswordStrength(pwd);
+    passwordStrength.textContent = strength;
+
+    passwordStrength.className = 'password-strength ' + strength.toLowerCase();
 });
